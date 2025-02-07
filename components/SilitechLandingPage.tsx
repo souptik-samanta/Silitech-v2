@@ -100,8 +100,8 @@ function SignupFormDemo() {
     setLoading(true);
     try {
       // Change the URL below to your backend server's URL.
-      const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
-      const backendUrl = 'http://37.27.51.34:35549/api/send-email';
+      const corsProxyUrl = 'https://api.allorigins.win/raw?url=';
+      const backendUrl = encodeURIComponent('http://37.27.51.34:35549/api/send-email');
       
       const res = await fetch(corsProxyUrl + backendUrl, {
         method: "POST",
