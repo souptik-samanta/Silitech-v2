@@ -70,19 +70,19 @@ function TypewriterEffect() {
 function SignupFormDemo() {
   // Form fields
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const [lastName, setLastName]   = useState("");
+  const [email, setEmail]         = useState("");
 
   // OTP-related state
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp]                   = useState("");
   const [generatedOtp, setGeneratedOtp] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpVerified, setOtpVerified] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [otpSent, setOtpSent]           = useState(false);
+  const [otpVerified, setOtpVerified]   = useState(false);
+  const [loading, setLoading]           = useState(false);
+  const [errorMsg, setErrorMsg]         = useState("");
 
   // Function to generate a random 6-digit OTP
-  const generateOtp = () => {
+  const generateOtp = (): string => {
     return Math.floor(100000 + Math.random() * 900000).toString();
   };
 
@@ -97,7 +97,6 @@ function SignupFormDemo() {
     setLoading(true);
     try {
       // Change the URL below to your backend server's URL.
-      // For example, if running locally on a specific port:
       const res = await fetch("http://192.168.0.100:5001/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,8 +104,8 @@ function SignupFormDemo() {
           to: email,
           template: "otp", // Your backend should recognize this template
           subject: "Your OTP Code for Silitech",
-          templateData: { otp: otpCode, name: firstName || "User" },
-        }),
+          templateData: { otp: otpCode, name: firstName || "User" }
+        })
       });
       const data = await res.json();
       if (data.success) {
@@ -115,7 +114,7 @@ function SignupFormDemo() {
       } else {
         setErrorMsg("Failed to send OTP. Please try again.");
       }
-    } catch (err) {
+    } catch (err: any) {
       setErrorMsg("Error sending OTP. Please try again.");
     }
     setLoading(false);
@@ -132,7 +131,7 @@ function SignupFormDemo() {
   };
 
   // Final form submission; only allowed after OTP is verified.
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!otpVerified) {
       setErrorMsg("Please verify the OTP before submitting.");
@@ -368,12 +367,7 @@ export default function SilitechLandingPage() {
               <p className={cn("mt-2", isDark ? "text-white/80" : "text-gray-700")}>
                 Founder & CEO
               </p>
-              <p
-                className={cn(
-                  "mt-4 max-w-2xl mx-auto leading-relaxed",
-                  isDark ? "text-white/60" : "text-gray-600"
-                )}
-              >
+              <p className={cn("mt-4 max-w-2xl mx-auto leading-relaxed", isDark ? "text-white/60" : "text-gray-600")}>
                 Visionary tech leader pioneering the future of durable technology solutions.
                 With a passion for innovation and commitment to excellence, Tathagata Ghosh steers
                 the company towards groundbreaking achievements.
