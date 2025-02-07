@@ -97,7 +97,7 @@ function SignupFormDemo() {
     setLoading(true);
     try {
       // Change the URL below to your backend server's URL.
-      const res = await fetch("http://192.168.0.100:5001/api/send-email", {
+      const res = await fetch("https://email-api-theta-navy.vercel.app/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
