@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start",
-    "server": "node server.js",
-    "lint": "next lint"
+    "start": "node server.js",
+    "lint": "next lint",
+    "start": "npm run build"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.2",
@@ -17,6 +17,7 @@
     "@tabler/icons-react": "^3.29.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
