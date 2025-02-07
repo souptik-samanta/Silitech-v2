@@ -8,7 +8,10 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
-
+export const metadata = {
+  title: "Silitech",
+  description: "Exceptionally Durable",
+}
 // ---------------------------------------------------------------------
 // Typewriter Effect Component
 // ---------------------------------------------------------------------
@@ -97,7 +100,7 @@ function SignupFormDemo() {
     setLoading(true);
     try {
       // Change the URL below to your backend server's URL.
-      const res = await fetch("http://192.168.0.100:5001/api/send-email", {
+      const res = await fetch("http://0.0.0.0:5001/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -65,6 +65,6 @@ app.post('/api/send-email', async (req, res) => {
 
 // Change the port to 5001 (or use the environment variable if set)
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
+app.listen(PORT,'0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
