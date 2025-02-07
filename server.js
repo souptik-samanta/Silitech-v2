@@ -23,14 +23,12 @@ const mailer = new EasyMailer(
  * - subject: (optional) email subject
  * - template: a template name (e.g., "otp")
  * - templateData: data to be inserted into the template (e.g., { otp: "123456", name: "User" })
- *
- * In this example, we are handling an OTP template inline.
  */
 app.post('/api/send-email', async (req, res) => {
   try {
     const { to, subject, template, templateData } = req.body;
 
-    // Validate required fields (you might add more validations as needed)
+    // Validate required fields
     if (!to || !template) {
       return res.status(400).json({ error: 'Missing required fields: to and template' });
     }
@@ -38,7 +36,6 @@ app.post('/api/send-email', async (req, res) => {
     let emailContent;
     switch (template) {
       case 'otp':
-        // Customize your OTP email content here
         emailContent = `
           <h1>Your OTP Code</h1>
           <p>Hello ${templateData.name || 'there'},</p>
@@ -66,7 +63,8 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 45701;
+// Change the port to 5001 (or use the environment variable if set)
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -35,7 +35,9 @@ function TypewriterEffect() {
       <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text animate-gradient">
         {text}
         <span
-          className={`${showCursor ? "opacity-100" : "opacity-0"} transition-opacity duration-100`}
+          className={`${
+            showCursor ? "opacity-100" : "opacity-0"
+          } transition-opacity duration-100`}
         >
           |
         </span>
@@ -82,43 +84,50 @@ function SignupFormDemo() {
   const [errorMsg, setErrorMsg]         = useState("");
 
   // Function to generate a random 6-digit OTP
-  const generateOtp = (): string => {
+  const generateOtp = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
   };
 
-  // Send OTP to the email via backend API
-  const handleSendOtp = async () => {
-    if (!email) {
-      setErrorMsg("Please enter your email first.");
-      return;
+  // Send OTP to the email via backend API using a CORS proxy
+  // In your SignupFormDemo component
+
+// Send OTP to the email via your locally hosted backend API
+const handleSendOtp = async () => {
+  if (!email) {
+    setErrorMsg("Please enter your email first.");
+    return;
+  }
+  const otpCode = generateOtp();
+  setGeneratedOtp(otpCode);
+  setLoading(true);
+  try {
+    // Directly call your local node server on port 5001
+    const apiUrl = "http://localhost:5001/api/send-email";
+    const res = await fetch(apiUrl, { 
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: email,
+        template: "otp",
+        subject: "Your OTP Code for Silitech",
+        templateData: { otp: otpCode, name: firstName || "User" },
+      }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      setOtpSent(true);
+      setErrorMsg("");
+    } else {
+      setErrorMsg("Failed to send OTP. Please try again.");
     }
-    const otpCode = generateOtp();
-    setGeneratedOtp(otpCode);
-    setLoading(true);
-    try {
-      // Change the URL below to your backend server's URL.
-      const res = await fetch("https://email-api-theta-navy.vercel.app/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: email,
-          template: "otp", // Your backend should recognize this template
-          subject: "Your OTP Code for Silitech",
-          templateData: { otp: otpCode, name: firstName || "User" }
-        })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setOtpSent(true);
-        setErrorMsg("");
-      } else {
-        setErrorMsg("Failed to send OTP. Please try again.");
-      }
-    } catch (err: any) {
-      setErrorMsg("Error sending OTP. Please try again.");
-    }
-    setLoading(false);
-  };
+  } catch (err) {
+    setErrorMsg("Error sending OTP. Please try again.");
+  }
+  setLoading(false);
+};
+
 
   // Verify the OTP entered by the user
   const handleVerifyOtp = () => {
@@ -130,16 +139,17 @@ function SignupFormDemo() {
     }
   };
 
-  // Final form submission; only allowed after OTP is verified.
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!otpVerified) {
-      setErrorMsg("Please verify the OTP before submitting.");
-      return;
-    }
-    console.log("Form submitted with data:", { firstName, lastName, email });
-    // Add additional submission logic (e.g. send data to your API) here.
-  };
+// Final form submission; only allowed after OTP is verified.
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  if (!otpVerified) {
+    setErrorMsg("Please verify the OTP before submitting.");
+    return;
+  }
+  console.log("Form submitted with data:", { firstName, lastName, email });
+  // Add additional submission logic (e.g. send data to your API) here.
+};
+
 
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
