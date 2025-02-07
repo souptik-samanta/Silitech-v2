@@ -100,13 +100,17 @@ function SignupFormDemo() {
     setLoading(true);
     try {
       // Change the URL below to your backend server's URL.
-      const res = await fetch("https://email-api-theta-navy.vercel.app/api/send-email", {
+      const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      const backendUrl = 'http://37.27.51.34:35549/api/send-email';
+      
+      const res = await fetch(corsProxyUrl + backendUrl, {
         method: "POST",
-        mode:"no-cors",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           to: email,
-          template: "otp", // Your backend should recognize this template
+          template: "otp",
           subject: "Your OTP Code for Silitech",
           templateData: { otp: otpCode, name: firstName || "User" }
         })
