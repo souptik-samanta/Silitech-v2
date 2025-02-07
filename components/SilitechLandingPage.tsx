@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { WavyBackground } from "@/components/ui/wavy-background";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun, Trophy } from "lucide-react";
@@ -8,50 +8,81 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
-import { motion } from "framer-motion";
-import { LampContainer } from "@/components/ui/lamp";
 
-/* --------------------------------------------------
-   Lamp Demo Component with Silitech branding
---------------------------------------------------*/
-function SilitechLamp() {
+// ---------------------------------------------------------------------
+// Typewriter Effect Component
+// ---------------------------------------------------------------------
+function TypewriterEffect() {
+  const [text, setText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+  const fullText = "Silitech";
+  const typingSpeed = 150; // milliseconds per character
+
+  useEffect(() => {
+    if (text.length < fullText.length) {
+      const timeout = setTimeout(() => {
+        setText(fullText.slice(0, text.length + 1));
+      }, typingSpeed);
+      return () => clearTimeout(timeout);
+    } else {
+      // Hide cursor after typing is complete
+      setTimeout(() => setShowCursor(false), 500);
+    }
+  }, [text]);
+
   return (
-    <LampContainer>
-      <motion.h1
-        initial={{ opacity: 0.5, y: 100 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{
-          delay: 0.3,
-          duration: 0.8,
-          ease: "easeInOut",
-        }}
-        className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
-      >
-        Silitech
-      </motion.h1>
-    </LampContainer>
+    <div className="relative inline-block">
+      <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text animate-gradient">
+        {text}
+        <span
+          className={`${showCursor ? "opacity-100" : "opacity-0"} transition-opacity duration-100`}
+        >
+          |
+        </span>
+      </h1>
+      <style jsx global>{`
+        @keyframes gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 3s ease infinite;
+          text-shadow: 0 0 10px rgba(255, 0, 255, 0.3),
+            0 0 20px rgba(255, 0, 255, 0.3),
+            0 0 30px rgba(255, 0, 255, 0.3);
+        }
+      `}</style>
+    </div>
   );
 }
 
-/* --------------------------------------------------
-   Signup Form Demo Component with OTP Flow
---------------------------------------------------*/
+// ---------------------------------------------------------------------
+// Signup Form Demo Component with OTP Flow
+// ---------------------------------------------------------------------
 function SignupFormDemo() {
   // Form fields
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName]   = useState("");
-  const [email, setEmail]         = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
 
   // OTP-related state
-  const [otp, setOtp]                   = useState("");
+  const [otp, setOtp] = useState("");
   const [generatedOtp, setGeneratedOtp] = useState("");
-  const [otpSent, setOtpSent]           = useState(false);
-  const [otpVerified, setOtpVerified]   = useState(false);
-  const [loading, setLoading]           = useState(false);
-  const [errorMsg, setErrorMsg]         = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Function to generate a random 6-digit OTP
-  const generateOtp = (): string => {
+  const generateOtp = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
   };
 
@@ -66,7 +97,7 @@ function SignupFormDemo() {
     setLoading(true);
     try {
       // Change the URL below to your backend server's URL.
-      // For example, if running locally on port 45701:
+      // For example, if running locally on a specific port:
       const res = await fetch("http://192.168.0.100:5001/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,8 +105,8 @@ function SignupFormDemo() {
           to: email,
           template: "otp", // Your backend should recognize this template
           subject: "Your OTP Code for Silitech",
-          templateData: { otp: otpCode, name: firstName || "User" }
-        })
+          templateData: { otp: otpCode, name: firstName || "User" },
+        }),
       });
       const data = await res.json();
       if (data.success) {
@@ -84,7 +115,7 @@ function SignupFormDemo() {
       } else {
         setErrorMsg("Failed to send OTP. Please try again.");
       }
-    } catch (err: any) {
+    } catch (err) {
       setErrorMsg("Error sending OTP. Please try again.");
     }
     setLoading(false);
@@ -101,7 +132,7 @@ function SignupFormDemo() {
   };
 
   // Final form submission; only allowed after OTP is verified.
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!otpVerified) {
       setErrorMsg("Please verify the OTP before submitting.");
@@ -215,9 +246,9 @@ const BottomGradient = () => {
   );
 };
 
-/* --------------------------------------------------
-       Landing Page Component
---------------------------------------------------*/
+// ---------------------------------------------------------------------
+// Landing Page Component
+// ---------------------------------------------------------------------
 export default function SilitechLandingPage() {
   const [isDark, setIsDark] = useState(true);
 
@@ -262,9 +293,9 @@ export default function SilitechLandingPage() {
         </div>
 
         <div className="container mx-auto px-4 py-20 space-y-32">
-          {/* Hero Section with Lamp Effect */}
+          {/* Hero Section */}
           <div className="text-center space-y-6">
-            <SilitechLamp />
+            <TypewriterEffect />
             <p className={`text-2xl font-light ${isDark ? "text-white/80" : "text-gray-800"}`}>
               Exceptionally Durable
             </p>
@@ -293,7 +324,9 @@ export default function SilitechLandingPage() {
                     : "bg-gray-800/5 hover:bg-gray-800/10 border border-gray-800/10"
                 )}
               >
-                <Trophy className={cn("w-8 h-8 mb-4", isDark ? "text-cyan-400" : "text-blue-600")} />
+                <Trophy
+                  className={cn("w-8 h-8 mb-4", isDark ? "text-cyan-400" : "text-blue-600")}
+                />
                 <h3 className={cn("text-xl font-bold mb-2", isDark ? "text-white" : "text-gray-800")}>
                   {achievement.title}
                 </h3>
@@ -335,7 +368,12 @@ export default function SilitechLandingPage() {
               <p className={cn("mt-2", isDark ? "text-white/80" : "text-gray-700")}>
                 Founder & CEO
               </p>
-              <p className={cn("mt-4 max-w-2xl mx-auto leading-relaxed", isDark ? "text-white/60" : "text-gray-600")}>
+              <p
+                className={cn(
+                  "mt-4 max-w-2xl mx-auto leading-relaxed",
+                  isDark ? "text-white/60" : "text-gray-600"
+                )}
+              >
                 Visionary tech leader pioneering the future of durable technology solutions.
                 With a passion for innovation and commitment to excellence, Tathagata Ghosh steers
                 the company towards groundbreaking achievements.
@@ -343,6 +381,7 @@ export default function SilitechLandingPage() {
             </div>
           </div>
 
+          {/* Instagram Link */}
           <div className="text-center">
             <a
               href="https://instagram.com/silitecharena"
