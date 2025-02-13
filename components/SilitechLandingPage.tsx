@@ -307,16 +307,18 @@ export default function SilitechLandingPage() {
               Exceptionally Durable
             </p>
             <Button
-              variant="outline"
-              className={cn(
-                "transition-all duration-300",
-                isDark
-                  ? "bg-transparent border-cyan-400 text-cyan-400 hover:bg-cyan-400/20"
-                  : "bg-transparent border-blue-600 text-blue-600 hover:bg-blue-600/20"
-              )}
-            >
-              Learn More
-            </Button>
+  variant="outline"
+  onClick={() => (window.location.href = "https://sale.silitech.uk/")}
+  className={cn(
+    "transition-all duration-300",
+    isDark
+      ? "bg-transparent border-cyan-400 text-cyan-400 hover:bg-cyan-400/20"
+      : "bg-transparent border-blue-600 text-blue-600 hover:bg-blue-600/20"
+  )}
+>
+  Learn More
+</Button>
+
           </div>
 
           {/* Achievements Section */}
