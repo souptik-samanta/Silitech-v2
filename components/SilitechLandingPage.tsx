@@ -372,14 +372,14 @@ export default function SilitechLandingPage() {
             </h2>
             <div className="text-center">
               <h3 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-gray-800")}>
-                Tathagata Ghosh
+                [NDA]
               </h3>
               <p className={cn("mt-2", isDark ? "text-white/80" : "text-gray-700")}>
                 Founder & CEO
               </p>
               <p className={cn("mt-4 max-w-2xl mx-auto leading-relaxed", isDark ? "text-white/60" : "text-gray-600")}>
                 Visionary tech leader pioneering the future of durable technology solutions.
-                With a passion for innovation and commitment to excellence, Tathagata Ghosh steers
+                With a passion for innovation and commitment to excellence, [NDA] steers
                 the company towards groundbreaking achievements.
               </p>
             </div>
